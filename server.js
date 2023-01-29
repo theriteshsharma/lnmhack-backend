@@ -138,5 +138,6 @@ app.patch('/reject/:id',async (req,res) => {
   res.status(200).send({msg:" Document Rejected"});
 })
 
-
-module.export = app
+app.listen(process.env.PORT, () => {
+  console.log(`Example app listening on port ${port}`)
+})
