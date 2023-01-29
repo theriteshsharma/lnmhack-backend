@@ -4,66 +4,62 @@ contract fileman{
 
 //-------------MODELS-------------------                                  
     struct User{
-        int id;
         string name;
         string role;
-        address[] docs;
+        string[] docs;
     }
     struct Doc{
-        address hash;
+        string hash;
         string status;
-        int verified_by;
-        int created_by;
+        string name;
+   
+        string verified_by;
+        string created_by;
     }
     
 //----------------Data Structures----------
 //-------------Users
     // User[]  allUsers;
-    int[]  allUsersId;
-    mapping(int => User)  users;
+    string[]  allUsersId;
+    mapping(string => User)  users;
     //---------Docs
     // Doc[] allDocs;
-    address[] allDocsHash;
-    mapping(address => Doc)  docs;
+    string[] allDocsHash;
+    mapping(string => Doc)  docs;
 
 //-----------------Functions---------------
 //-------------Users
-    function createUser(int _id, string calldata _role, string calldata _name) public {
+    function createUser(string calldata _name,  string calldata _role) public {
         User memory newUser ;
-        newUser.id = _id;
         newUser.role = _role;
         newUser.name = _name;
-        users[_id] = newUser;
-        allUsersId.push(_id);
+        users[_name] = newUser;
+        allUsersId.push(_name);
         // allUsers.push(newUser);
     }
-    function getUser(int _id) public view returns (User memory ){
-       return users[_id]; 
+
+    //getUser
+    function getUser(string memory _name) public view returns (User memory ){
+       return users[_name]; 
     }
-    function getAllUsers() view public returns (int[] memory){
-        return(allUsersId);
-    }
+    
 //------------Docs
-    function createDoc(address  _hash, int  _id) public {
-        Doc memory newDoc = Doc({hash: _hash, status: "Pending: Not Assigned", verified_by: 0, created_by: _id});
+    function createDoc(string memory  _hash, string memory  _id, string memory _name) public {
+        Doc memory newDoc = Doc({hash: _hash, status: "Pending: Not Assigned", verified_by: '', created_by: _id,name:_name});
         docs[_hash] = newDoc;
         users[_id].docs.push(_hash);
         allDocsHash.push(_hash);
         // id_keys.push(_id);
     }
-    function getDoc(address _hash) view public returns (Doc memory){
+    function getDoc(string memory _hash) view public returns (Doc memory){
         return docs[_hash];
     }
-    function getAllDocs() view public returns (address[] memory){
+    function getAllDocs() view public returns (string[] memory){
         return(allDocsHash);
     }
 //------------Verification
-    function getVerified(int _byId, address _hash) public {
-        users[_byId].docs.push(_hash);
-        docs[_hash].status = "Pending: Assigned";
-        docs[_hash].verified_by = _byId;
-    }
-    function verifyDoc(address _hash, int _status) public{
+   
+    function verifyDoc(string memory _hash, int _status, string memory  _vby) public{
         string memory s;
         if(_status == 0){
             s = "Declined";
@@ -72,8 +68,9 @@ contract fileman{
             s = "Accepted";
         }
         docs[_hash].status = s;
+        docs[_hash].verified_by = _vby;
     }
-    function getVerificationStatus(address _hash) view public returns(string memory, User memory){
+    function getVerificationStatus(string memory _hash) view public returns(string memory, User memory){
         string memory _status = docs[_hash].status;
         User memory _verfiee = users[docs[_hash].verified_by];
         return(_status, _verfiee);
