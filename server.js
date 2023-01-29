@@ -1,6 +1,6 @@
 require('dotenv').config()
 const  { Web3Storage, getFilesFromPath } =  require('web3.storage');
-const token = process.env.WEB3_TOKEN;
+const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweDc2NzdlYkQ3QWZFQzk1N0QwNjBDOWQ1RjA3QzA3QUExOUExYzU1RjMiLCJpc3MiOiJ3ZWIzLXN0b3JhZ2UiLCJpYXQiOjE2NzQ5NzQ4MDMxODYsIm5hbWUiOiJmaW5hbGRlcGxveSJ9.XJou56mEtrUS7BYpEDlkjT1Q6DGGkIhNQGBIlmM2Hqc";
 const storage = new Web3Storage({ token })
 
 const { ethers } = require("ethers");
@@ -139,6 +139,6 @@ app.patch('/reject/:id',async (req,res) => {
 })
 
 
-app.listen(port,'0.0.0.0', () => {
+app.listen(port,'172.22.24.193', () => {
   console.log(`Example app listening on port ${port}`)
 })
